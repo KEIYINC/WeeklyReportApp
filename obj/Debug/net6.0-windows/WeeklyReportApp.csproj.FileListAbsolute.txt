@@ -1,0 +1,17 @@
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.csproj.AssemblyReference.cache
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.AssemblyInfoInputs.cache
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.AssemblyInfo.cs
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.csproj.CoreCompileInputs.cache
+C:\Users\umutk\Desktop\WeeklyReportApp\bin\Debug\net6.0-windows\WeeklyReportApp.exe
+C:\Users\umutk\Desktop\WeeklyReportApp\bin\Debug\net6.0-windows\WeeklyReportApp.deps.json
+C:\Users\umutk\Desktop\WeeklyReportApp\bin\Debug\net6.0-windows\WeeklyReportApp.runtimeconfig.json
+C:\Users\umutk\Desktop\WeeklyReportApp\bin\Debug\net6.0-windows\WeeklyReportApp.dll
+C:\Users\umutk\Desktop\WeeklyReportApp\bin\Debug\net6.0-windows\WeeklyReportApp.pdb
+C:\Users\umutk\Desktop\WeeklyReportApp\bin\Debug\net6.0-windows\DocumentFormat.OpenXml.dll
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyRe.646CFE08.Up2Date
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.dll
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\refint\WeeklyReportApp.dll
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.pdb
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\WeeklyReportApp.genruntimeconfig.cache
+C:\Users\umutk\Desktop\WeeklyReportApp\obj\Debug\net6.0-windows\ref\WeeklyReportApp.dll

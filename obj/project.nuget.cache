@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "NZnygj94kHI=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\umutk\\Desktop\\WeeklyReportApp\\WeeklyReportApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\umutk\\.nuget\\packages\\documentformat.openxml\\2.20.0\\documentformat.openxml.2.20.0.nupkg.sha512",
+    "C:\\Users\\umutk\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512",
+    "C:\\Users\\umutk\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\umutk\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\umutk\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\umutk\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
+  ],
+  "logs": []
+}

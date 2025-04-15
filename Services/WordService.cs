@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text;
-using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using WeeklyReportApp.Models;
@@ -10,16 +9,22 @@ namespace WeeklyReportApp.Services
 {
     public class WordService
     {
-        public static void UpdateTemplate(UserInfo userInfo, string completedActivities, string ongoingActivities, string plannedActivities)
+        public static string GenerateReport(UserInfo userInfo, string completedActivities, string ongoingActivities, string plannedActivities)
         {
-            string tempPath = Path.GetTempFileName();
-            File.Copy(userInfo.TemplatePath, tempPath, true);
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string newDocPath = Path.Combine(
+                Path.GetDirectoryName(userInfo.TemplatePath),
+                $"WeeklyReport_{timestamp}.docx");
 
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(tempPath, true))
+            File.Copy(userInfo.TemplatePath, newDocPath, true);
+
+            using (WordprocessingDocument doc = WordprocessingDocument.Open(newDocPath, true))
             {
-                var body = doc.MainDocumentPart.Document.Body;
+                var body = doc.MainDocumentPart?.Document?.Body;
 
-                // Replace placeholders
+                if (body == null)
+                    throw new InvalidOperationException("Word belgesi hatalı: Body kısmı bulunamadı.");
+
                 ReplacePlaceholder(body, "{Ad}", userInfo.FullName);
                 ReplacePlaceholder(body, "{Tarih}", DateTime.Now.ToString("dd.MM.yyyy"));
                 ReplacePlaceholder(body, "{TamamlananFaaliyetler}", completedActivities);
@@ -29,25 +34,28 @@ namespace WeeklyReportApp.Services
                 doc.MainDocumentPart.Document.Save();
             }
 
-            // Save the updated document
-            string outputPath = Path.Combine(
-                Path.GetDirectoryName(userInfo.TemplatePath),
-                $"WeeklyReport_{DateTime.Now:yyyyMMdd}.docx");
+            return newDocPath;
+        }
 
-            File.Copy(tempPath, outputPath, true);
-            File.Delete(tempPath);
+        public static string ConvertDocxToPdf(string docxPath)
+        {
+            string pdfPath = Path.ChangeExtension(docxPath, ".pdf");
+
+            // Spire.Doc ile Office gerekmeden PDF dönüşümü
+            var document = new Spire.Doc.Document();
+            document.LoadFromFile(docxPath);
+            document.SaveToFile(pdfPath, Spire.Doc.FileFormat.PDF);
+
+            return pdfPath;
         }
 
         private static void ReplacePlaceholder(Body body, string placeholder, string value)
         {
-            if (body == null) return;
-
-            foreach (var paragraph in body.Descendants<Paragraph>())
+            foreach (var paragraph in body.Descendants<DocumentFormat.OpenXml.Wordprocessing.Paragraph>())
             {
                 string paragraphText = GetParagraphText(paragraph);
                 if (paragraphText.Contains(placeholder))
                 {
-                    // Tüm metni birleştir ve değiştir
                     StringBuilder newText = new StringBuilder();
                     foreach (var run in paragraph.Descendants<Run>())
                     {
@@ -56,13 +64,11 @@ namespace WeeklyReportApp.Services
                             if (text.Text.Contains(placeholder))
                             {
                                 text.Text = text.Text.Replace(placeholder, value);
-                                Console.WriteLine($"Replaced {placeholder} with {value}");
                             }
                             newText.Append(text.Text);
                         }
                     }
 
-                    // Eğer hala placeholder varsa, tüm paragrafı yeniden oluştur
                     if (newText.ToString().Contains(placeholder))
                     {
                         paragraph.RemoveAllChildren();
@@ -72,7 +78,7 @@ namespace WeeklyReportApp.Services
             }
         }
 
-        private static string GetParagraphText(Paragraph paragraph)
+        private static string GetParagraphText(DocumentFormat.OpenXml.Wordprocessing.Paragraph paragraph)
         {
             StringBuilder text = new StringBuilder();
             foreach (var run in paragraph.Descendants<Run>())
@@ -85,4 +91,4 @@ namespace WeeklyReportApp.Services
             return text.ToString();
         }
     }
-} 
+}

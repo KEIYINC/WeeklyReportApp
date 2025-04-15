@@ -18,6 +18,9 @@ namespace WeeklyReportApp.Forms
         private Label lblTemplate;
         private TextBox txtTemplatePath;
         private UserInfo _currentUserInfo;
+        private TextBox txtEmailPassword;
+        private Label lblEmailPassword;
+
 
         public SetupForm()
         {
@@ -34,13 +37,17 @@ namespace WeeklyReportApp.Forms
                 txtEmail.Text = _currentUserInfo.Email;
                 txtTargetEmail.Text = _currentUserInfo.TargetEmail;
                 txtTemplatePath.Text = _currentUserInfo.TemplatePath;
+                txtEmailPassword.Text = _currentUserInfo.EmailPassword;
+
             }
-        }
+       }
 
         private void InitializeComponent()
-        {
-            this.txtFullName = new TextBox();
+        {   
+
             this.txtEmail = new TextBox();
+            this.txtFullName = new TextBox();
+            this.txtEmailPassword = new TextBox();
             this.txtTargetEmail = new TextBox();
             this.btnSelectTemplate = new Button();
             this.btnSave = new Button();
@@ -93,9 +100,21 @@ namespace WeeklyReportApp.Forms
             this.btnSelectTemplate.Click += BtnSelectTemplate_Click;
 
             this.btnSave.Text = "Save";
-            this.btnSave.Location = new System.Drawing.Point(200, 180);
+            this.btnSave.Location = new System.Drawing.Point(200, 220);
             this.btnSave.Size = new System.Drawing.Size(100, 30);
             this.btnSave.Click += BtnSave_Click;
+
+            // Email Password Label
+            this.lblEmailPassword = new Label();
+            this.lblEmailPassword.Text = "Email Password:";
+            this.lblEmailPassword.Location = new System.Drawing.Point(20, 180);
+            this.lblEmailPassword.AutoSize = true;
+
+            // Email Password TextBox
+            this.txtEmailPassword = new TextBox();
+            this.txtEmailPassword.Location = new System.Drawing.Point(120, 180);
+            this.txtEmailPassword.Size = new System.Drawing.Size(350, 20);
+            this.txtEmailPassword.PasswordChar = '*';
 
             // Add controls to form
             this.Controls.AddRange(new Control[] {
@@ -103,9 +122,10 @@ namespace WeeklyReportApp.Forms
                 this.lblEmail, this.txtEmail,
                 this.lblTargetEmail, this.txtTargetEmail,
                 this.lblTemplate, this.txtTemplatePath,
-                this.btnSelectTemplate, this.btnSave
-            });
-        }
+                this.btnSelectTemplate, this.btnSave,
+                this.lblEmailPassword, this.txtEmailPassword
+            });}
+
 
         private void BtnSelectTemplate_Click(object sender, EventArgs e)
         {
@@ -138,7 +158,8 @@ namespace WeeklyReportApp.Forms
                 Email = txtEmail.Text,
                 TargetEmail = txtTargetEmail.Text,
                 TemplatePath = txtTemplatePath.Text,
-                LastReportDate = _currentUserInfo?.LastReportDate ?? DateTime.Now
+                LastReportDate = _currentUserInfo?.LastReportDate ?? DateTime.Now,
+                EmailPassword = txtEmailPassword.Text,
             };
 
             ConfigManager.SaveUserInfo(userInfo);

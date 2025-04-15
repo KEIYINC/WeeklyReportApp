@@ -9,5 +9,7 @@ namespace WeeklyReportApp.Models
         public string TargetEmail { get; set; }
         public string TemplatePath { get; set; }
         public DateTime LastReportDate { get; set; }
+        public string EmailPassword { get; set; }  
+
     }
 } 

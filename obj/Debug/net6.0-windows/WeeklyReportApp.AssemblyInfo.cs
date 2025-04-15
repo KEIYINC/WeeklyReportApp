@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WeeklyReportApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7d94bd9ec44f9d0c316b506129ad8179f7f39c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+91e21282218864641237642d4cfa209e50986eee")]
 [assembly: System.Reflection.AssemblyProductAttribute("WeeklyReportApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WeeklyReportApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

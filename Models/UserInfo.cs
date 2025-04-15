@@ -10,6 +10,11 @@ namespace WeeklyReportApp.Models
         public string TemplatePath { get; set; }
         public DateTime LastReportDate { get; set; }
         public string EmailPassword { get; set; }  
+        
+        public string SmtpServer { get; set; }
+        public int SmtpPort { get; set; }
+        public bool EnableSsl { get; set; }
+
 
     }
 } 

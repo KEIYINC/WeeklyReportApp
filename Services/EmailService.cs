@@ -1,7 +1,7 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
-using System.IO;
 using WeeklyReportApp.Models;
 
 namespace WeeklyReportApp.Services
@@ -15,16 +15,47 @@ namespace WeeklyReportApp.Services
                 message.From = new MailAddress(userInfo.Email);
                 message.To.Add(userInfo.TargetEmail);
                 message.Subject = $"Weekly Report - {DateTime.Now:dd.MM.yyyy}";
-                message.Body = $"Please find attached the weekly report in PDF format.";
+                message.Body = "Please find attached the weekly report in PDF format.";
 
                 var attachment = new Attachment(pdfPath);
                 message.Attachments.Add(attachment);
 
-                using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
+                // SMTP Client Ayarları
+                string smtpHost = userInfo.SmtpServer;
+                int smtpPort = userInfo.SmtpPort;
+                bool enableSsl = userInfo.EnableSsl;
+
+                // Gmail veya Outlook için sabit ayar kontrolü
+                if (userInfo.SmtpServer.Contains("gmail"))
                 {
-                smtpClient.Credentials = new NetworkCredential(userInfo.Email, userInfo.EmailPassword);
-                    smtpClient.EnableSsl = true;
-                    smtpClient.Send(message);
+                    smtpHost = "smtp.gmail.com";
+                    smtpPort = 587;
+                    enableSsl = true;
+                }
+                else if (userInfo.SmtpServer.Contains("office365") || userInfo.SmtpServer.Contains("outlook"))
+                {
+                    smtpHost = "smtp.office365.com";
+                    smtpPort = 587;
+                    enableSsl = true;
+                }
+
+                using (var smtpClient = new SmtpClient(smtpHost, smtpPort))
+                {
+                    smtpClient.Credentials = new NetworkCredential(userInfo.Email, userInfo.EmailPassword);
+                    smtpClient.EnableSsl = enableSsl;
+
+                    try
+                    {
+                        smtpClient.Send(message);
+                    }
+                    catch (SmtpException smtpEx)
+                    {
+                        throw new Exception($"SMTP Error: {smtpEx.StatusCode} - {smtpEx.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Unexpected Error: {ex.Message}");
+                    }
                 }
             }
         }

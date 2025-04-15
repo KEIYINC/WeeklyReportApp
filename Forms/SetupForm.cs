@@ -10,16 +10,25 @@ namespace WeeklyReportApp.Forms
         private TextBox txtFullName;
         private TextBox txtEmail;
         private TextBox txtTargetEmail;
-        private Button btnSelectTemplate;
-        private Button btnSave;
+        private TextBox txtTemplatePath;
+        private TextBox txtEmailPassword;
+        private TextBox txtSmtpServer;
+        private TextBox txtSmtpPort;
+        private CheckBox chkEnableSsl;
         private Label lblFullName;
         private Label lblEmail;
         private Label lblTargetEmail;
         private Label lblTemplate;
-        private TextBox txtTemplatePath;
-        private UserInfo _currentUserInfo;
-        private TextBox txtEmailPassword;
         private Label lblEmailPassword;
+        private Label lblSmtpServer;
+        private Label lblSmtpPort;
+        private Label lblEnableSsl;
+        private Button btnSelectTemplate;
+        private Button btnSave;
+        private UserInfo _currentUserInfo;
+        private ComboBox cmbSmtpProvider;
+        private Label lblSmtpProvider;
+        
 
 
         public SetupForm()
@@ -31,6 +40,7 @@ namespace WeeklyReportApp.Forms
         private void LoadCurrentSettings()
         {
             _currentUserInfo = ConfigManager.LoadUserInfo();
+
             if (_currentUserInfo != null)
             {
                 txtFullName.Text = _currentUserInfo.FullName;
@@ -38,93 +48,172 @@ namespace WeeklyReportApp.Forms
                 txtTargetEmail.Text = _currentUserInfo.TargetEmail;
                 txtTemplatePath.Text = _currentUserInfo.TemplatePath;
                 txtEmailPassword.Text = _currentUserInfo.EmailPassword;
+                txtSmtpServer.Text = _currentUserInfo.SmtpServer;
+                txtSmtpPort.Text = _currentUserInfo.SmtpPort.ToString();
+                chkEnableSsl.Checked = _currentUserInfo.EnableSsl;
 
+                // SMTP provider seçimini otomatik olarak geri yükle
+                if (!string.IsNullOrWhiteSpace(_currentUserInfo.SmtpServer))
+                {
+                    if (_currentUserInfo.SmtpServer.Contains("gmail"))
+                        cmbSmtpProvider.SelectedItem = "Gmail";
+                    else if (_currentUserInfo.SmtpServer.Contains("office365"))
+                        cmbSmtpProvider.SelectedItem = "Outlook";
+                }
             }
-       }
+        }
+
 
         private void InitializeComponent()
-        {   
+{
+    // Initialize Controls
+    txtFullName = new TextBox();
+    txtEmail = new TextBox();
+    txtTargetEmail = new TextBox();
+    txtTemplatePath = new TextBox();
+    txtEmailPassword = new TextBox();
+    txtSmtpServer = new TextBox();
+    txtSmtpPort = new TextBox();
+    chkEnableSsl = new CheckBox();
+    cmbSmtpProvider = new ComboBox();
 
-            this.txtEmail = new TextBox();
-            this.txtFullName = new TextBox();
-            this.txtEmailPassword = new TextBox();
-            this.txtTargetEmail = new TextBox();
-            this.btnSelectTemplate = new Button();
-            this.btnSave = new Button();
-            this.lblFullName = new Label();
-            this.lblEmail = new Label();
-            this.lblTargetEmail = new Label();
-            this.lblTemplate = new Label();
-            this.txtTemplatePath = new TextBox();
+    lblFullName = new Label();
+    lblEmail = new Label();
+    lblTargetEmail = new Label();
+    lblTemplate = new Label();
+    lblEmailPassword = new Label();
+    lblSmtpServer = new Label();
+    lblSmtpPort = new Label();
+    lblEnableSsl = new Label();
+    lblSmtpProvider = new Label();
 
-            // Form setup
-            this.Text = "Weekly Report App - Settings";
-            this.Size = new System.Drawing.Size(500, 300);
-            this.StartPosition = FormStartPosition.CenterScreen;
+    btnSelectTemplate = new Button();
+    btnSave = new Button();
 
-            // Labels
-            this.lblFullName.Text = "Full Name:";
-            this.lblFullName.Location = new System.Drawing.Point(20, 20);
-            this.lblFullName.AutoSize = true;
+    // Form setup
+    this.Text = "Weekly Report App - Settings";
+    this.Size = new System.Drawing.Size(550, 480);
+    this.StartPosition = FormStartPosition.CenterScreen;
 
-            this.lblEmail.Text = "Email:";
-            this.lblEmail.Location = new System.Drawing.Point(20, 60);
-            this.lblEmail.AutoSize = true;
+    int labelX = 20;
+    int inputX = 150;
+    int width = 350;
+    int lineHeight = 30;
 
-            this.lblTargetEmail.Text = "Target Email:";
-            this.lblTargetEmail.Location = new System.Drawing.Point(20, 100);
-            this.lblTargetEmail.AutoSize = true;
+    // Labels
+    lblFullName.Text = "Full Name:";
+    lblFullName.Location = new System.Drawing.Point(labelX, 20);
+    lblFullName.AutoSize = true;
 
-            this.lblTemplate.Text = "Word Template:";
-            this.lblTemplate.Location = new System.Drawing.Point(20, 140);
-            this.lblTemplate.AutoSize = true;
+    lblEmail.Text = "Email:";
+    lblEmail.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 1);
+    lblEmail.AutoSize = true;
 
-            // TextBoxes
-            this.txtFullName.Location = new System.Drawing.Point(120, 20);
-            this.txtFullName.Size = new System.Drawing.Size(350, 20);
+    lblTargetEmail.Text = "Target Email:";
+    lblTargetEmail.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 2);
+    lblTargetEmail.AutoSize = true;
 
-            this.txtEmail.Location = new System.Drawing.Point(120, 60);
-            this.txtEmail.Size = new System.Drawing.Size(350, 20);
+    lblTemplate.Text = "Word Template:";
+    lblTemplate.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 3);
+    lblTemplate.AutoSize = true;
 
-            this.txtTargetEmail.Location = new System.Drawing.Point(120, 100);
-            this.txtTargetEmail.Size = new System.Drawing.Size(350, 20);
+    lblEmailPassword.Text = "Email Password:";
+    lblEmailPassword.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 4);
+    lblEmailPassword.AutoSize = true;
 
-            this.txtTemplatePath.Location = new System.Drawing.Point(120, 140);
-            this.txtTemplatePath.Size = new System.Drawing.Size(250, 20);
-            this.txtTemplatePath.ReadOnly = true;
+    lblSmtpServer.Text = "SMTP Server:";
+    lblSmtpServer.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 5);
+    lblSmtpServer.AutoSize = true;
 
-            // Buttons
-            this.btnSelectTemplate.Text = "Browse";
-            this.btnSelectTemplate.Location = new System.Drawing.Point(380, 140);
-            this.btnSelectTemplate.Size = new System.Drawing.Size(90, 23);
-            this.btnSelectTemplate.Click += BtnSelectTemplate_Click;
+    lblSmtpPort.Text = "SMTP Port:";
+    lblSmtpPort.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 6);
+    lblSmtpPort.AutoSize = true;
 
-            this.btnSave.Text = "Save";
-            this.btnSave.Location = new System.Drawing.Point(200, 220);
-            this.btnSave.Size = new System.Drawing.Size(100, 30);
-            this.btnSave.Click += BtnSave_Click;
+    lblEnableSsl.Text = "Enable SSL:";
+    lblEnableSsl.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 7);
+    lblEnableSsl.AutoSize = true;
 
-            // Email Password Label
-            this.lblEmailPassword = new Label();
-            this.lblEmailPassword.Text = "Email Password:";
-            this.lblEmailPassword.Location = new System.Drawing.Point(20, 180);
-            this.lblEmailPassword.AutoSize = true;
+    lblSmtpProvider.Text = "Email Provider:";
+    lblSmtpProvider.Location = new System.Drawing.Point(labelX, 20 + lineHeight * 8);
+    lblSmtpProvider.AutoSize = true;
 
-            // Email Password TextBox
-            this.txtEmailPassword = new TextBox();
-            this.txtEmailPassword.Location = new System.Drawing.Point(120, 180);
-            this.txtEmailPassword.Size = new System.Drawing.Size(350, 20);
-            this.txtEmailPassword.PasswordChar = '*';
+    // Inputs
+    txtFullName.Location = new System.Drawing.Point(inputX, 20);
+    txtFullName.Size = new System.Drawing.Size(width, 20);
 
-            // Add controls to form
-            this.Controls.AddRange(new Control[] {
-                this.lblFullName, this.txtFullName,
-                this.lblEmail, this.txtEmail,
-                this.lblTargetEmail, this.txtTargetEmail,
-                this.lblTemplate, this.txtTemplatePath,
-                this.btnSelectTemplate, this.btnSave,
-                this.lblEmailPassword, this.txtEmailPassword
-            });}
+    txtEmail.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 1);
+    txtEmail.Size = new System.Drawing.Size(width, 20);
+
+    txtTargetEmail.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 2);
+    txtTargetEmail.Size = new System.Drawing.Size(width, 20);
+
+    txtTemplatePath.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 3);
+    txtTemplatePath.Size = new System.Drawing.Size(width - 100, 20);
+    txtTemplatePath.ReadOnly = true;
+
+    txtEmailPassword.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 4);
+    txtEmailPassword.Size = new System.Drawing.Size(width, 20);
+    txtEmailPassword.PasswordChar = '*';
+
+    txtSmtpServer.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 5);
+    txtSmtpServer.Size = new System.Drawing.Size(width, 20);
+
+    txtSmtpPort.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 6);
+    txtSmtpPort.Size = new System.Drawing.Size(width, 20);
+
+    chkEnableSsl.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 7);
+
+    cmbSmtpProvider.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 8);
+    cmbSmtpProvider.Size = new System.Drawing.Size(200, 21);
+    cmbSmtpProvider.DropDownStyle = ComboBoxStyle.DropDownList;
+    cmbSmtpProvider.Items.AddRange(new object[] { "Gmail", "Outlook" });
+    cmbSmtpProvider.SelectedIndexChanged += CmbSmtpProvider_SelectedIndexChanged;
+
+    // Buttons
+    btnSelectTemplate.Text = "Browse";
+    btnSelectTemplate.Location = new System.Drawing.Point(inputX + width - 90, 20 + lineHeight * 3);
+    btnSelectTemplate.Size = new System.Drawing.Size(80, 23);
+    btnSelectTemplate.Click += BtnSelectTemplate_Click;
+
+    btnSave.Text = "Save";
+    btnSave.Location = new System.Drawing.Point(inputX, 20 + lineHeight * 10);
+    btnSave.Size = new System.Drawing.Size(100, 30);
+    btnSave.Click += BtnSave_Click;
+
+    // Add controls to form
+    this.Controls.AddRange(new Control[] {
+        lblFullName, txtFullName,
+        lblEmail, txtEmail,
+        lblTargetEmail, txtTargetEmail,
+        lblTemplate, txtTemplatePath, btnSelectTemplate,
+        lblEmailPassword, txtEmailPassword,
+        lblSmtpServer, txtSmtpServer,
+        lblSmtpPort, txtSmtpPort,
+        lblEnableSsl, chkEnableSsl,
+        lblSmtpProvider, cmbSmtpProvider,
+        btnSave
+    });
+}
+
+
+        private void CmbSmtpProvider_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selected = cmbSmtpProvider.SelectedItem.ToString();
+            if (selected == "Gmail")
+            {
+                txtSmtpServer.Text = "smtp.gmail.com";
+                txtSmtpPort.Text = "587";
+                chkEnableSsl.Checked = true;
+            }
+            else if (selected == "Outlook")
+            {
+                txtSmtpServer.Text = "smtp.office365.com";
+                txtSmtpPort.Text = "587";
+                chkEnableSsl.Checked = true;
+            }
+
+
+        }
 
 
         private void BtnSelectTemplate_Click(object sender, EventArgs e)
@@ -146,9 +235,18 @@ namespace WeeklyReportApp.Forms
             if (string.IsNullOrWhiteSpace(txtFullName.Text) ||
                 string.IsNullOrWhiteSpace(txtEmail.Text) ||
                 string.IsNullOrWhiteSpace(txtTargetEmail.Text) ||
-                string.IsNullOrWhiteSpace(txtTemplatePath.Text))
+                string.IsNullOrWhiteSpace(txtTemplatePath.Text) ||
+                string.IsNullOrWhiteSpace(txtEmailPassword.Text) ||
+                string.IsNullOrWhiteSpace(txtSmtpServer.Text) ||
+                string.IsNullOrWhiteSpace(txtSmtpPort.Text))
             {
                 MessageBox.Show("Please fill in all fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!int.TryParse(txtSmtpPort.Text, out int smtpPort))
+            {
+                MessageBox.Show("SMTP Port must be a valid number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -160,6 +258,9 @@ namespace WeeklyReportApp.Forms
                 TemplatePath = txtTemplatePath.Text,
                 LastReportDate = _currentUserInfo?.LastReportDate ?? DateTime.Now,
                 EmailPassword = txtEmailPassword.Text,
+                SmtpServer = txtSmtpServer.Text,
+                SmtpPort = smtpPort,
+                EnableSsl = chkEnableSsl.Checked
             };
 
             ConfigManager.SaveUserInfo(userInfo);
@@ -167,4 +268,4 @@ namespace WeeklyReportApp.Forms
             this.Close();
         }
     }
-} 
+}

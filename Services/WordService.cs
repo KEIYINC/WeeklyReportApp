@@ -26,7 +26,7 @@ namespace WeeklyReportApp.Services
                     throw new InvalidOperationException("Word belgesi hatalı: Body kısmı bulunamadı.");
 
                 ReplacePlaceholder(body, "{Ad}", userInfo.FullName);
-                ReplacePlaceholder(body, "{Tarih}", DateTime.Now.ToString("dd.MM.yyyy"));
+                ReplacePlaceholder(body, "{Tarih}", GetCurrentWeekDateRange());
                 ReplacePlaceholder(body, "{TamamlananFaaliyetler}", completedActivities);
                 ReplacePlaceholder(body, "{DevamEdenFaaliyetler}", ongoingActivities);
                 ReplacePlaceholder(body, "{PlanlananFaaliyetler}", plannedActivities);
@@ -48,6 +48,25 @@ namespace WeeklyReportApp.Services
 
             return pdfPath;
         }
+        private static string GetCurrentWeekDateRange()
+        {
+            // Haftanın bugünü
+            DateTime today = DateTime.Today;
+
+            // Bugünün haftanın kaçıncı günü olduğunu bul (Pazartesi = 1)
+            int diffToMonday = ((int)today.DayOfWeek + 6) % 7;
+
+            // Haftanın Pazartesi ve Cuma gününü bul
+            DateTime monday = today.AddDays(-diffToMonday);
+            DateTime friday = monday.AddDays(4);
+
+            // Türkçe ay ismini büyük harfle yaz
+            string start = monday.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR")).ToUpper();
+            string end = friday.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR")).ToUpper();
+
+            return $"Dönemi: {start} – {end}";
+        }
+
 
         private static void ReplacePlaceholder(Body body, string placeholder, string value)
         {
